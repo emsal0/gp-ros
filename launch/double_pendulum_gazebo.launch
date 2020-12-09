@@ -1,0 +1,26 @@
+<launch>
+  <arg name="model" default="$(find pilco_control)/urdf/double_pendulum.urdf" />
+  <arg name="rvizconfig" default="$(find urdf_tutorial)/rviz/urdf.rviz" />
+  <arg name="gui" default="true" />
+  <include file="$(find urdf_sim_tutorial)/launch/gazebo.launch">
+    <arg name="model" value="$(arg model)" />
+    <arg name="gui" value="$(arg gui)" />
+  </include>
+
+  <param name="robot_description" command="xacro $(arg model)" />
+  <param name="use_gui" value="$(arg gui)"/>
+
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
+  <rosparam command="load"
+    file="$(find double_pendulum)/config/joints.yaml"
+    ns="double_pendulum_state_controller" />
+  <rosparam command="load"
+    file="$(find double_pendulum)/config/joints_control.yaml"
+    ns="double_pendulum_joints_controller" />
+
+  <node name="double_pendulum_controller_spawner"
+        pkg="controller_manager" type="spawner"
+        args="double_pendulum_state_controller
+              double_pendulum_joints_controller --shutdown-timeout 3" />
+</launch>

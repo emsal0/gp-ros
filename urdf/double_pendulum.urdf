@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<robot name="double_pendulum_with_base">
+    <joint name="upper_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="upper_link"/>
+        <!--origin xyz="0  0  2.1" rpy="-1.5708  0      0"/ -->
+        <origin xyz="0  0  2.1" rpy="0  0      0"/>
+        <axis xyz="1 0 0"/>
+            <!--limit lower="0" upper="0" effort="10" velocity="1"/ -->
+    </joint>
+    <transmission name="upper_joint">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="upper_joint_motor"></actuator>
+        <joint name="upper_joint">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+    </transmission>
+    <joint name="lower_joint" type="continuous">
+        <parent link="upper_link"/>
+        <child link="lower_link"/>
+        <!--origin xyz="0.25 0   1" rpy="-0.4292  0      0"/ -->
+        <origin xyz="0.25 0   1" rpy="-0.4292  0      0"/>
+        <axis xyz="1 0 0"/>
+            <!-- limit lower="0" upper="0" effort="10" velocity="1"/ -->
+    </joint>
+    <transmission name="lower_joint">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="lower_joint_motor"></actuator>
+        <joint name="lower_joint">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+    </transmission>
+    <link name="base_link">
+        <inertial>
+            <mass value="1000"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial>
+        <collision name="col_plate_on_ground">
+            <origin xyz="0   0   0.01" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.8" length="0.02"/>
+            </geometry>
+        </collision>
+        <collision name="col_pole">
+            <origin xyz="-0.275  0     1.1" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 2.2"/>
+            </geometry>
+        </collision>
+        <visual name="vis_plate_on_ground">
+            <origin xyz="0   0   0.01" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.8" length="0.02"/>
+            </geometry>
+        </visual>
+        <visual name="vis_pole">
+            <origin xyz="-0.275  0     1.1" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 2.2"/>
+            </geometry>
+        </visual>
+    </link>
+    <link name="upper_link">
+        <inertial>
+            <mass value="1"/>
+            <origin xyz="0  0  0.5" rpy="0 0 0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial>
+        <collision name="col_upper_joint">
+            <origin xyz="-0.05  0    0" rpy="3.14159 1.57079 3.14159"/>
+            <geometry>
+                <cylinder radius="0.1" length="0.3"/>
+            </geometry>
+        </collision>
+        <collision name="col_lower_joint">
+            <origin xyz="0 0 1" rpy="3.14159 1.57079 3.14159"/>
+            <geometry>
+                <cylinder radius="0.1" length="0.2"/>
+            </geometry>
+        </collision>
+        <collision name="col_cylinder">
+            <origin xyz="0  0  0.5" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.1" length="0.9"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0  0  0.5" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.1" length="0.9"/>
+            </geometry>
+        </visual>
+    </link>
+    <link name="lower_link">
+        <inertial>
+            <mass value="1"/>
+            <origin xyz="0  0  0.5" rpy="0 0 0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial>
+        <collision name="col_lower_joint">
+            <origin xyz="0 0 0" rpy="-3.14159  1.57079  3.14159"/>
+            <geometry>
+                <cylinder radius="0.08" length="0.3"/>
+            </geometry>
+        </collision>
+        <collision name="col_cylinder">
+            <origin xyz="0  0  0.5" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.1" length="0.9"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0  0  0.5" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.1" length="0.9"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/</robotNamespace>
+        </plugin>
+    </gazebo>
+</robot>

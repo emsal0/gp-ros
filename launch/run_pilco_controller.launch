@@ -1,0 +1,18 @@
+<launch>
+  <include file="$(find pilco_control)/launch/double_pendulum_gazebo.launch">
+    <arg name="gui" value="false" />
+  </include>
+  <arg name="train" default="false" />
+  <arg name="is_rand" default="false" />
+
+  <node name="pilco_talker" pkg="pilco_control" 
+    type="pilco_effort_control.py" 
+    output="screen" args="" respawn="true" />
+
+  <param name="is_rand" value="$(arg is_rand)" />
+
+  <node name="pilco_listener" pkg="pilco_control" 
+    type="pilco_listener.py" 
+    args="" respawn="true" 
+    if="$(arg train)"/>
+</launch>
