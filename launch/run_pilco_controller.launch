@@ -3,13 +3,13 @@
     <arg name="gui" value="false" />
   </include>
   <arg name="train" default="false" />
-  <arg name="is_rand" default="false" />
+  <arg name="mode" default="control" />
 
   <node name="pilco_talker" pkg="pilco_control" 
     type="pilco_effort_control.py" 
     output="screen" args="" respawn="true" />
 
-  <param name="is_rand" value="$(arg is_rand)" />
+  <param name="mode" value="$(arg mode)" />
 
   <node name="pilco_listener" pkg="pilco_control" 
     type="pilco_listener.py" 
